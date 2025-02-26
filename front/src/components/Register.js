@@ -2,13 +2,14 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import '../styles/Register.css';
 
 const Register = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [firstname, setFirstname] = useState('');
   const [lastname, setLastname] = useState('');
-  const [role, setRole] = useState('ROLE_USER'); // Default role
+  const [role, setRole] = useState('QUEST'); // Default role
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
@@ -42,9 +43,9 @@ const Register = () => {
   };
 
   return (
-    <div>
+    <div className="register-container"> {/* Добавляем класс контейнеру */}
       <h2>Register</h2>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+      {error && <p className="error" style={{ color: 'red' }}>{error}</p>}
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="username">Username:</label>
