@@ -3,12 +3,16 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import '../styles/User.css'; // Import CSS file
+import AnimalModal from './AnimalModal'; // Import the AnimalModal component
 
 const User = () => {
     const [userData, setUserData] = useState(null);
     const [error, setError] = useState('');
-    const [activeTab, setActiveTab] = useState('dogs'); // Changed default to 'dogs'
+    const [activeTab, setActiveTab] = useState('dogs');
     const navigate = useNavigate();
+    const [animalNames, setAnimalNames] = useState([]);
+    const [selectedAnimal, setSelectedAnimal] = useState(null); // State for selected animal
+    const [isModalOpen, setIsModalOpen] = useState(false);   // State to control modal visibility
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -48,6 +52,24 @@ const User = () => {
         fetchUserData();
     }, [navigate]);
 
+    useEffect(() => {
+        const fetchAnimalNames = async () => {
+            try {
+                const response = await axios.get('http://localhost:8080/api/animals/names', {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('jwtToken')}`,
+                    },
+                });
+                setAnimalNames(response.data);
+            } catch (error) {
+                console.error('Error fetching animal names:', error);
+                setError('Failed to fetch animal names.'); // Set an error message
+            }
+        };
+
+        fetchAnimalNames();
+    }, []);
+
     const handleLogout = () => {
         localStorage.removeItem('jwtToken');
         navigate('/login');
@@ -55,6 +77,27 @@ const User = () => {
 
     const handleTabClick = (tab) => {
         setActiveTab(tab);
+    };
+
+    const handleAnimalButtonClick = async (animalId) => {
+        try {
+            const response = await axios.get(`http://localhost:8080/api/animals/${animalId}`, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('jwtToken')}`,
+                },
+            });
+            setSelectedAnimal(response.data);
+            setIsModalOpen(true);
+        } catch (error) {
+            console.error('Error fetching animal details:', error);
+            setError('Failed to fetch animal details.');
+        }
+    };
+
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+        setSelectedAnimal(null);
     };
 
     return (
@@ -85,33 +128,20 @@ const User = () => {
                     {activeTab === 'cats' && <div>Content for Cats</div>}
                     {activeTab === 'dogs' && (
                         <div>
-                            {/* Admin Buttons */}
-                            {userData && userData.role && userData.role.name === 'ADMIN' && (
-                                <div className="admin-buttons">
-                                    <button>ADMIN BUTTONS</button>
-                                </div>
-                            )}
-
-                            {/* Operator and Admin Buttons */}
-                            {userData && userData.role && (userData.role.name === 'OPER' || userData.role.name === 'ADMIN') && (
-                                <div className="oper-buttons">
-                                    <button>OPER BUTTONS</button>
-                                </div>
-                            )}
-
-                            {/* Guest, Admin and Oper Buttons */}
-                            {userData && userData.role && (userData.role.name === 'QUEST' || userData.role.name === 'ADMIN' || userData.role.name === 'OPER') && (
-                                <div className="quest-buttons">
-                                    <button>QUEST BUTTONS</button>
-                                </div>
-                            )}
-                            Content for Dogs
+                           {animalNames.map((animal, index) => (
+                                <button className="animal-button" key={index} onClick={() => handleAnimalButtonClick(animal.id)}>
+                                    {animal.name}
+                                </button>
+                            ))}
                         </div>
                     )}
                     {activeTab === 'documents' && <div>Content for Documents</div>}
                     {activeTab === 'info' && <div>content for info</div>}
                 </main>
             </div>
+             {isModalOpen && (
+                <AnimalModal animal={selectedAnimal} onClose={closeModal} />
+            )}
         </div>
     );
 };

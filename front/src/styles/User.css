@@ -89,61 +89,27 @@
     margin-bottom: 10px;
 }
 
-/* Стили для кнопок администратора */
-.admin-buttons {
-    margin-bottom: 20px;
-}
-.oper-buttons {
-    margin-bottom: 20px;
-}
-.quest-buttons {
-    margin-bottom: 20px;
-}
-
-.admin-buttons button {
-    background-color: #28a745;
-    color: white;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1em;
-    margin-right: 10px;
-    transition: background-color 0.3s ease;
+.animal-button {
+    background-color: #007bff; /* Синий цвет фона */
+    border: none; /* Убираем рамку */
+    color: white; /* Белый цвет текста */
+    padding: 10px 15px; /* Отступы */
+    text-align: center; /* Выравниваем текст по центру */
+    text-decoration: none; /* Убираем подчеркивание */
+    display: inline-block; /* Отображаем как строчный элемент */
+    font-size: 1em; /* Размер шрифта */
+    margin: 5px; /* Отступы вокруг кнопки */
+    cursor: pointer; /* Изменяем курсор при наведении */
+    border-radius: 5px; /* Скругляем углы */
+    transition: background-color 0.3s ease; /* Плавный переход цвета фона */
 }
 
-.admin-buttons button:hover {
-    background-color: #218838;
+.animal-button:hover {
+    background-color: #0056b3; /* Более темный синий цвет при наведении */
 }
 
-.oper-buttons button {
-    background-color: #2878a7;
-    color: white;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1em;
-    margin-right: 10px;
-    transition: background-color 0.3s ease;
+.animal-button:active {
+    background-color: #0056b3; /* Еще более темный синий цвет при нажатии */
+    transform: translateY(1px); /* Небольшой сдвиг вниз при нажатии */
 }
 
-.oper-buttons button:hover {
-    background-color: #217c88;
-}
-
-.quest-buttons button {
-    background-color: #a77f28;
-    color: white;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1em;
-    margin-right: 10px;
-    transition: background-color 0.3s ease;
-}
-
-.quest-buttons button:hover {
-    background-color: #885321;
-}
